@@ -7,7 +7,27 @@
 	<key>category</key>
 	<string>Internet</string>
 	<key>connections</key>
-	<dict/>
+	<dict>
+		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B8584F68-2E3A-4883-AE38-1F31EE5C2657</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Copy URL to clipboard</string>
+			</dict>
+		</array>
+	</dict>
 	<key>createdby</key>
 	<string>Thomas Upton</string>
 	<key>description</key>
@@ -18,6 +38,25 @@
 	<string>Google Chrome History</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>open -a "/Applications/Google Chrome.app" "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.script</string>
+			<key>uid</key>
+			<string>B8584F68-2E3A-4883-AE38-1F31EE5C2657</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -57,15 +96,40 @@ python chrome.py "${PROFILE}" "{query}"</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>uidata</key>
 	<dict>
-		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
+		<key>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</key>
 		<dict>
 			<key>ypos</key>
 			<real>130</real>
+		</dict>
+		<key>B8584F68-2E3A-4883-AE38-1F31EE5C2657</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
