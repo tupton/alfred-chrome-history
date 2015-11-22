@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>thomasupton.chrome-history</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict/>
+	<key>createdby</key>
+	<string>Thomas Upton</string>
+	<key>description</key>
+	<string>Access to URLs in your Google Chrome profile's history</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Google Chrome History</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>ch</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Searching...</string>
+				<key>script</key>
+				<string>PROFILE="~/Library/Application Support/Google/Chrome/Default"
+PATH="env/bin:$PATH"
+python chrome.py "${PROFILE}" "{query}"</string>
+				<key>subtext</key>
+				<string>Search URLs in your profile's history</string>
+				<key>title</key>
+				<string>Google Chrome History</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
+		<dict>
+			<key>ypos</key>
+			<real>130</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://www.thomasupton.com/</string>
+</dict>
+</plist>
