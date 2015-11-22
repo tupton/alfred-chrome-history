@@ -32,8 +32,8 @@ def copy_history(profile):
 def get_history(query):
     conn = sqlite3.connect('History')
     c = conn.cursor()
-    q = '%{}%'.format(query)
-    rows = c.execute('SELECT title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC', (q, q,))
+    q = u'%{}%'.format(query)
+    rows = c.execute(u'SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC', (q, q,))
     return rows
 
 if __name__ == '__main__':
@@ -46,6 +46,6 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     rows = get_history(query)
-    items = [alfred.Item({'uid': row[1], 'arg': row[1]}, row[0], row[1]) for row in rows]
+    items = [alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url) for (uid, title, url) in rows]
     xml = alfred.xml(items)
     alfred.write(xml)
