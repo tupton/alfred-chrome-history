@@ -19,7 +19,7 @@ def alfred_error(error):
     alfred.write(alfred.xml([error]))
 
 def copy_history(profile):
-    history_file = os.path.join(os.path.expanduser(profile), 'History')
+    history_file = os.path.join(os.path.expanduser(profile), HISTORY_DB)
 
     if os.path.isfile(HISTORY_CACHE) and time() - os.path.getmtime(HISTORY_CACHE) < HISTORY_CACHE_EXPIRY:
         return HISTORY_CACHE
@@ -28,7 +28,7 @@ def copy_history(profile):
         shutil.copy(history_file, HISTORY_CACHE)
 
     if not os.path.isfile(HISTORY_CACHE):
-        raise IOError('Unable to copy Google Chrome history database from {}'.format(history_file))
+        raise IOError(u'Unable to copy Google Chrome history database from {}'.format(history_file))
 
     return HISTORY_CACHE
 
