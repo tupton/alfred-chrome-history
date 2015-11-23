@@ -16,7 +16,7 @@ SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_v
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
-        alfred.Item.__init__(self, {u'valid': u'NO'}, error.message, u'Check the workflow log for more information.')
+        alfred.Item.__init__(self, {u'valid': u'NO', u'autocomplete': error.message}, error.message, u'Check the workflow log for more information.')
 
 def alfred_error(error):
     alfred.write(alfred.xml([ErrorItem(error)]))
@@ -42,7 +42,7 @@ def history_results(db, query):
     q = u'%{}%'.format(query)
     for row in db.execute(HISTORY_QUERY, (q, q,)):
         (uid, title, url) = row
-        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title or url, url)
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url, u'autocomplete': url}, title or url, url)
 
 if __name__ == '__main__':
     (profile, query) = alfred.args()
