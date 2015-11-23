@@ -13,7 +13,7 @@ HISTORY_CACHE = os.path.join(alfred.work(True), HISTORY_DB)
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
-        alfred.Item.__init__(self, {u'valid': u'NO'}, error.message, u'Check the workfrow log for more information.')
+        alfred.Item.__init__(self, {u'valid': u'NO'}, error.message, u'Check the workflow log for more information.')
 
 def alfred_error(error):
     alfred.write(alfred.xml([error]))
