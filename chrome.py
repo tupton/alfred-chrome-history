@@ -8,7 +8,8 @@ import sys
 from time import time
 
 HISTORY_CACHE_EXPIRY = 60
-LOCAL_HISTORY_DB = 'History'
+HISTORY_DB = 'History'
+HISTORY_CACHE = os.path.join(alfred.work(True), HISTORY_DB)
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
@@ -19,18 +20,17 @@ def alfred_error(error):
 
 def copy_history(profile):
     history_file = os.path.join(os.path.expanduser(profile), 'History')
-    history = LOCAL_HISTORY_DB
 
-    if os.path.isfile(LOCAL_HISTORY_DB) and time() - os.path.getmtime(LOCAL_HISTORY_DB) < HISTORY_CACHE_EXPIRY:
-        return history
+    if os.path.isfile(HISTORY_CACHE) and time() - os.path.getmtime(HISTORY_CACHE) < HISTORY_CACHE_EXPIRY:
+        return HISTORY_CACHE
 
     if os.path.isfile(history_file):
-        shutil.copy(history_file, LOCAL_HISTORY_DB)
+        shutil.copy(history_file, HISTORY_CACHE)
 
-    if not os.path.isfile(LOCAL_HISTORY_DB):
+    if not os.path.isfile(HISTORY_CACHE):
         raise IOError('Unable to copy Google Chrome history database from {}'.format(history_file))
 
-    return history
+    return HISTORY_CACHE
 
 def history_db(profile):
     history = copy_history(profile)
