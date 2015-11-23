@@ -41,7 +41,7 @@ def history_results(db, query):
     q = u'%{}%'.format(query)
     for row in db.execute(u'SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC', (q, q,)):
         (uid, title, url) = row
-        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url)
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title or url, url)
 
 if __name__ == '__main__':
     (profile, query) = alfred.args()
