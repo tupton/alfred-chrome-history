@@ -5,7 +5,7 @@ import sqlite3
 import shutil
 import os
 import sys
-from time import time
+import time
 
 HISTORY_CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
@@ -21,7 +21,7 @@ def alfred_error(error):
 def copy_history(profile):
     history_file = os.path.join(os.path.expanduser(profile), HISTORY_DB)
 
-    if os.path.isfile(HISTORY_CACHE) and time() - os.path.getmtime(HISTORY_CACHE) < HISTORY_CACHE_EXPIRY:
+    if os.path.isfile(HISTORY_CACHE) and time.time() - os.path.getmtime(HISTORY_CACHE) < HISTORY_CACHE_EXPIRY:
         return HISTORY_CACHE
 
     if os.path.isfile(history_file):
