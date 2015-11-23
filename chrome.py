@@ -10,6 +10,9 @@ import time
 HISTORY_CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
 HISTORY_CACHE = os.path.join(alfred.work(True), HISTORY_DB)
+HISTORY_QUERY = u"""
+SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC
+"""
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
@@ -37,7 +40,7 @@ def history_db(profile):
 
 def history_results(db, query):
     q = u'%{}%'.format(query)
-    for row in db.execute(u'SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC', (q, q,)):
+    for row in db.execute(HISTORY_QUERY, (q, q,)):
         (uid, title, url) = row
         yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title or url, url)
 
