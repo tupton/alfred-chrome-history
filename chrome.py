@@ -16,7 +16,7 @@ class ErrorItem(alfred.Item):
         alfred.Item.__init__(self, {u'valid': u'NO'}, error.message, u'Check the workflow log for more information.')
 
 def alfred_error(error):
-    alfred.write(alfred.xml([error]))
+    alfred.write(alfred.xml([ErrorItem(error)]))
 
 def copy_history(profile):
     history_file = os.path.join(os.path.expanduser(profile), HISTORY_DB)
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     try:
         db = history_db(profile)
     except IOError, e:
-        alfred_error(ErrorItem(e))
+        alfred_error(e)
         sys.exit(-1)
 
     alfred.write(alfred.xml(history_results(db, query)))
