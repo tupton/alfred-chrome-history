@@ -7,7 +7,7 @@ import os
 import sys
 from time import time
 
-HISTORY_CACHE_TIME = 60
+HISTORY_CACHE_EXPIRY = 60
 LOCAL_HISTORY_DB = 'History'
 
 class ErrorItem(alfred.Item):
@@ -21,7 +21,7 @@ def copy_history(profile):
     history_file = os.path.join(os.path.expanduser(profile), 'History')
     history = LOCAL_HISTORY_DB
 
-    if os.path.isfile(LOCAL_HISTORY_DB) and os.path.getmtime(LOCAL_HISTORY_DB) > time() - HISTORY_CACHE_TIME:
+    if os.path.isfile(LOCAL_HISTORY_DB) and time() - os.path.getmtime(LOCAL_HISTORY_DB) < HISTORY_CACHE_EXPIRY:
         return history
 
     if os.path.isfile(history_file):
