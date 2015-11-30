@@ -1,9 +1,24 @@
 all :
 	@echo "Run \`make workflow\` to create the Alfred workflow file after removing the old one if it exists."
 
-clean :
+distclean :
 	rm -f ./alfred-chrome-history.alfredworkflow
 
-workflow : clean
-	zip -r ./alfred-chrome-history.alfredworkflow . -x "*.git*" .gitignore "*env*" History requirements.txt
+clean :
+	rm -f alfred.py
+
+install :
+	pip install -r requirements.txt
+
+lib :
+	cp `python sitepackages.py`/alfred.py alfred.py
+
+zip :
+	zip -r ./alfred-chrome-history.alfredworkflow . -x "*.git*" "*env*" .gitignore Makefile History requirements.txt README.md sitepackages.py
+
+workflow : distclean \
+	install \
+	lib \
+	zip \
+	clean
 
