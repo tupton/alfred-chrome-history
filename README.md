@@ -2,6 +2,8 @@
 
 Access your Google Chrome history from Alfred with `ch {query}`.
 
+![alfred chrome history workflow](screenshot.png)
+
 ## How to install
 
 Clone this repo and symlink it to `<sync directory>/Alfred.alfredpreferences/workflows/alfred-chrome-history`. Your Alfred sync directory can be found going to Preferences → Advanced → Syncing.
