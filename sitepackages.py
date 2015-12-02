@@ -12,7 +12,9 @@ def virtual_env_site_packages():
         return site_packages[-1]
 
 def site_packages():
-    return site.getsitepackages()[0]
+    site_packages = site.getsitepackages()
+    if len(site_packages) > 0:
+        return site_packages[0]
 
 def get_site_packages():
     if is_virtual_env():
