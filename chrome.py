@@ -11,7 +11,7 @@ HISTORY_CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
 HISTORY_CACHE = os.path.join(alfred.work(True), HISTORY_DB)
 HISTORY_QUERY = u"""
-SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY last_visit_time DESC
+SELECT id,title,url FROM urls WHERE (title LIKE ? OR url LIKE ?) ORDER BY visit_count DESC, typed_count DESC, last_visit_time DESC
 """
 
 class ErrorItem(alfred.Item):
