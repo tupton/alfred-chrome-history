@@ -26,8 +26,7 @@ SELECT urls.id, urls.title, urls.url, favicon_bitmaps.image_data, favicon_bitmap
 UNIX_EPOCH = datetime.datetime.utcfromtimestamp(0)
 WINDOWS_EPOCH = datetime.datetime(1601, 1, 1)
 SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH = (UNIX_EPOCH - WINDOWS_EPOCH).total_seconds()
-MICROSECS_PER_SEC = 10**-6
-
+MICROSECS_PER_SEC = 10 ** -6
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
@@ -49,14 +48,12 @@ def copy_db(name, profile):
 
     return cache
 
-
 def history_db(profile):
     history = copy_db(HISTORY_DB, profile)
     favicons = copy_db(FAVICONS_DB, profile)
     db = sqlite3.connect(history)
     db.cursor().execute('ATTACH DATABASE ? AS favicons', (favicons,)).close()
     return db
-
 
 def cache_favicon(image_data, uid, last_updated):
     cache_dir = os.path.join(alfred.work(True), FAVICONS_CACHE)
@@ -75,7 +72,6 @@ def cache_favicon(image_data, uid, last_updated):
 # https://code.google.com/p/chromium/codesearch#chromium/src/base/time/time.h
 def convert_chrometime(chrometime):
     return (chrometime * MICROSECS_PER_SEC) - SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH
-
 
 def history_results(db, query):
     q = u'%{}%'.format(query)
