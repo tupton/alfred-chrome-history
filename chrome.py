@@ -67,7 +67,6 @@ def cache_favicon(image_data, uid, last_updated):
 
     return (icon_file, {'type': 'png'})
 
-
 # Chrome measures time in microseconds since the Windows epoch (1601/1/1)
 # https://code.google.com/p/chromium/codesearch#chromium/src/base/time/time.h
 def convert_chrometime(chrometime):
