@@ -14,7 +14,7 @@ lib :
 	cp `python sitepackages.py`/alfred.py alfred.py
 
 zip :
-	zip -r ./alfred-chrome-history.alfredworkflow . -x "*.git*" "*env*" .gitignore Makefile History requirements.txt README.md sitepackages.py
+	zip -r ./alfred-chrome-history.alfredworkflow . -x "*.git*" "*env*" .gitignore Makefile History requirements.txt README.md sitepackages.py screenshot.png
 
 workflow : distclean \
 	install \
