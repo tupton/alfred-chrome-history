@@ -30,7 +30,6 @@ import os
 import sys
 import time
 import datetime
-
 from docopt import docopt
 
 __version__ = '0.4'
