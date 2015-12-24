@@ -1,3 +1,26 @@
+#!/usr/bin/env python
+
+"""
+Get relevant history from the Google Chrome history database based on the given query and build
+Alfred items based on the results.
+
+Usage:
+    chrome.py [--no-favicons | --favicons] PROFILE QUERY
+    chrome.py (-h | --help)
+    chrome.py --version
+
+The path to the Chrome user profile to get the history database from is given in PROFILE. The query
+to search for is given in QUERY. The output is formatted as the Alfred script filter XML output
+format.
+
+    PROFILE  The path to the Chrome profile whose history database should be searched
+    QUERY    The query to search the history database with
+
+Options:
+    --no-favicons  Do not return Alfred XML results with favicons [default: false]
+    --favicons     Include favicons in the Alfred XML results [default: true]
+"""
+
 from __future__ import print_function
 
 import alfred
@@ -7,6 +30,10 @@ import os
 import sys
 import time
 import datetime
+
+from docopt import docopt
+
+__version__ = '0.4'
 
 CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
@@ -80,6 +107,10 @@ def history_results(db, query):
         yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url, u'autocomplete': url}, title or url, url, icon)
 
 if __name__ == '__main__':
+    arguments = docopt(__doc__, version='Alfred Chrome History {}'.format(VERSION))
+    print(arguments)
+    sys.exit(0)
+
     (profile, query) = alfred.args()
 
     try:
