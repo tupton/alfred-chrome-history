@@ -1,3 +1,26 @@
+#!/usr/bin/env python
+
+"""
+Get relevant history from the Google Chrome history database based on the given query and build
+Alfred items based on the results.
+
+Usage:
+    chrome.py [--no-favicons | --favicons] PROFILE QUERY
+    chrome.py (-h | --help)
+    chrome.py --version
+
+The path to the Chrome user profile to get the history database from is given in PROFILE. The query
+to search for is given in QUERY. The output is formatted as the Alfred script filter XML output
+format.
+
+    PROFILE  The path to the Chrome profile whose history database should be searched
+    QUERY    The query to search the history database with
+
+Options:
+    --no-favicons  Do not return Alfred XML results with favicons [default: false]
+    --favicons     Include favicons in the Alfred XML results [default: true]
+"""
+
 from __future__ import print_function
 
 import alfred
@@ -7,22 +30,34 @@ import os
 import sys
 import time
 import datetime
+from docopt import docopt
+
+__version__ = '0.4'
 
 CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
 FAVICONS_DB = 'Favicons'
 FAVICONS_CACHE = 'Favicons-Cache'
-HISTORY_QUERY = u"""
-SELECT urls.id, urls.title, urls.url, favicon_bitmaps.image_data, favicon_bitmaps.last_updated
-    FROM urls
+
+FAVICON_JOIN = u"""
     LEFT OUTER JOIN icon_mapping ON icon_mapping.page_url = urls.url,
                     favicon_bitmaps ON favicon_bitmaps.id =
                         (SELECT id FROM favicon_bitmaps
                             WHERE favicon_bitmaps.icon_id = icon_mapping.icon_id
                             ORDER BY width DESC LIMIT 1)
+"""
+FAVICON_SELECT = u"""
+    , favicon_bitmaps.image_data, favicon_bitmaps.last_updated
+"""
+
+HISTORY_QUERY = u"""
+SELECT urls.id, urls.title, urls.url {favicon_select}
+    FROM urls
+    {favicon_join}
     WHERE (urls.title LIKE ? OR urls.url LIKE ?)
     ORDER BY visit_count DESC, typed_count DESC, last_visit_time DESC
 """
+
 UNIX_EPOCH = datetime.datetime.utcfromtimestamp(0)
 WINDOWS_EPOCH = datetime.datetime(1601, 1, 1)
 SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH = (UNIX_EPOCH - WINDOWS_EPOCH).total_seconds()
@@ -48,11 +83,12 @@ def copy_db(name, profile):
 
     return cache
 
-def history_db(profile):
+def history_db(profile, favicons=True):
     history = copy_db(HISTORY_DB, profile)
-    favicons = copy_db(FAVICONS_DB, profile)
     db = sqlite3.connect(history)
-    db.cursor().execute('ATTACH DATABASE ? AS favicons', (favicons,)).close()
+    if favicons:
+        favicons = copy_db(FAVICONS_DB, profile)
+        db.cursor().execute('ATTACH DATABASE ? AS favicons', (favicons,)).close()
     return db
 
 def cache_favicon(image_data, uid, last_updated):
@@ -72,20 +108,35 @@ def cache_favicon(image_data, uid, last_updated):
 def convert_chrometime(chrometime):
     return (chrometime * MICROSECS_PER_SEC) - SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH
 
-def history_results(db, query):
+def history_results(db, query, favicons=True):
     q = u'%{}%'.format(query)
-    for row in db.execute(HISTORY_QUERY, (q, q,)):
-        (uid, title, url, image_data, image_last_updated) = row
-        icon = cache_favicon(image_data, uid, convert_chrometime(image_last_updated)) if image_data and image_last_updated else None
+    if favicons:
+        favicon_select = FAVICON_SELECT
+        favicon_join = FAVICON_JOIN
+    else:
+        favicon_select = ''
+        favicon_join = ''
+    for row in db.execute(HISTORY_QUERY.format(favicon_select=favicon_select, favicon_join=favicon_join), (q, q,)):
+        if favicons:
+            (uid, title, url, image_data, image_last_updated) = row
+            icon = cache_favicon(image_data, uid, convert_chrometime(image_last_updated)) if image_data and image_last_updated else None
+        else:
+            (uid, title, url) = row
+            icon = None
+
         yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url, u'autocomplete': url}, title or url, url, icon)
 
 if __name__ == '__main__':
-    (profile, query) = alfred.args()
+    arguments = docopt(__doc__, version='Alfred Chrome History {}'.format(__version__))
+    favicons = arguments.get('--no-favicons') is False
+
+    profile = arguments.get('PROFILE')
+    query = arguments.get('QUERY')
 
     try:
-        db = history_db(profile)
+        db = history_db(profile, favicons=favicons)
     except IOError, e:
         alfred_error(e)
         sys.exit(-1)
 
-    alfred.write(alfred.xml(history_results(db, query)))
+    alfred.write(alfred.xml(history_results(db, query, favicons=favicons)))

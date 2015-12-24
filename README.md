@@ -12,6 +12,16 @@ Or [download the workflow from the releases page][releases].
 
   [releases]: https://github.com/tupton/alfred-chrome-history/releases
 
+## Configuration
+
+The workflow should work out of the box with the `ch` prefix. If you'd like to change this, update the keyword in the Alfred workflow's script filter.
+
+The Alfred script filter is set up to use the default Chrome profile. If you need to use a different profile, update the `PROFILE` environment variable in the Alfred workflow's script filter.
+
+By default, the script tries to grab favicons from a separate database. This can sometimes slow down the results, which is not desirable. To turn off favicon support, pass `--no-favicons` in the Alfred workflow's script filter. The last line of the script should look like the following:
+
+    python chrome.py "${PROFILE}" "{query}" --no-favicons
+
 ## How to build
 
 `make workflow` will put any dependencies in place and build `alfred-chrome-history.alfredworkflow` in the current directory.
