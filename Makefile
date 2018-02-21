@@ -34,6 +34,5 @@ zip :
 workflow : distclean \
 	install \
 	lib \
-	zip \
-	clean
+	zip
 
