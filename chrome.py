@@ -32,7 +32,7 @@ import time
 import datetime
 from docopt import docopt
 
-__version__ = '0.6.0SNAPSHOT'
+__version__ = '0.6.0'
 
 CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
