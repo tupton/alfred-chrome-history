@@ -77,7 +77,7 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>63</integer>
+				<integer>36</integer>
 				<key>keyword</key>
 				<string>ch</string>
 				<key>queuedelaycustom</key>
