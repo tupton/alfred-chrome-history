@@ -17,6 +17,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -25,6 +27,8 @@
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
 				<string>Copy URL to clipboard</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
@@ -47,19 +51,29 @@
 				<integer>102</integer>
 				<key>script</key>
 				<string>open -a "/Applications/Google Chrome.app" "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.script</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>B8584F68-2E3A-4883-AE38-1F31EE5C2657</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
@@ -80,6 +94,10 @@
 				<string>PROFILE="~/Library/Application Support/Google/Chrome/Default"
 PATH="env/bin:$PATH"
 python chrome.py "${PROFILE}" "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>subtext</key>
 				<string>Search URLs in your profile's history</string>
 				<key>title</key>
@@ -94,7 +112,7 @@ python chrome.py "${PROFILE}" "{query}"</string>
 			<key>uid</key>
 			<string>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -103,13 +121,15 @@ python chrome.py "${PROFILE}" "{query}"</string>
 				<false/>
 				<key>clipboardtext</key>
 				<string>{query}</string>
+				<key>transient</key>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
 			<string>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -118,16 +138,22 @@ python chrome.py "${PROFILE}" "{query}"</string>
 	<dict>
 		<key>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>130</real>
 		</dict>
 		<key>B8584F68-2E3A-4883-AE38-1F31EE5C2657</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
 		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
