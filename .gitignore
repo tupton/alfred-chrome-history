@@ -1,3 +1,6 @@
 History
-env/
+venv/
 *.alfredworkflow
+*.py
+*.pyc
+!chrome.py

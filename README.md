@@ -8,7 +8,9 @@ Access your Google Chrome history from Alfred with `ch {query}`.
 
 Clone this repo and symlink it to `<sync directory>/Alfred.alfredpreferences/workflows/alfred-chrome-history`. Your Alfred sync directory can be found going to Preferences → Advanced → Syncing.
 
-Or [download the workflow from the releases page][releases].
+Then run `make dev` to install requirements and set the repository up to be used as a workflow.
+
+Or [download the workflow from the releases page][releases] and install by double-clicking it.
 
   [releases]: https://github.com/tupton/alfred-chrome-history/releases
 
@@ -27,6 +29,8 @@ By default, the script tries to grab favicons from a separate database. This can
 `make workflow` will put any dependencies in place and build `alfred-chrome-history.alfredworkflow` in the current directory.
 
 Note that `sitepackages.py` attempts to find `alfred.py` and copy it into the workflow archive. Please let me know if this script fails to find `alfred.py`. It attempts to find it in both global installations and within a virtualenv, but I have only tested this on my local machine.
+
+`make dev` also puts dependencies in place so that the workflow can work when symlinked to the correct workflows directory as mentioned above.
 
 ## Thanks
 
