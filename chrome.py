@@ -130,8 +130,8 @@ if __name__ == '__main__':
     arguments = docopt(__doc__, version='Alfred Chrome History {}'.format(__version__))
     favicons = arguments.get('--no-favicons') is False
 
-    profile = arguments.get('PROFILE')
-    query = arguments.get('QUERY')
+    profile = unicode(arguments.get('PROFILE'), encoding='utf-8', errors='ignore')
+    query = unicode(arguments.get('QUERY'), encoding='utf-8', errors='ignore')
 
     try:
         db = history_db(profile, favicons=favicons)
