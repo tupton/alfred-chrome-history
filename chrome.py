@@ -131,7 +131,7 @@ if __name__ == '__main__':
     favicons = arguments.get('--no-favicons') is False
 
     profile = arguments.get('PROFILE')
-    query = arguments.get('QUERY')
+    query = unicode(arguments.get('QUERY'), 'utf-8')
 
     try:
         db = history_db(profile, favicons=favicons)
