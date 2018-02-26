@@ -18,6 +18,10 @@ Or [download the workflow from the releases page][releases] and install by doubl
 
 The workflow should work out of the box with the `ch` prefix. If you'd like to change this, update the keyword in the Alfred workflow's script filter.
 
+If simply typing `ch` does not yield any results, you might need to create the the following directory. Replace <YourFolder> with your username
+
+    mkdir -p "/Users/<YourFolder>/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/"
+
 The Alfred script filter is set up to use the default Chrome profile. If you need to use a different profile, update the `PROFILE` environment variable in the Alfred workflow's script filter.
 
 By default, the script tries to grab favicons from a separate database. This can sometimes slow down the results, which is not desirable. To turn off favicon support, pass `--no-favicons` in the Alfred workflow's script filter. The last line of the script should look like the following:
