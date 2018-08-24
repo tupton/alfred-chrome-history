@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>thomasupton.chrome-history</string>
+	<string>com.thomasupton.chrome-history</string>
 	<key>category</key>
 	<string>Internet</string>
 	<key>connections</key>
@@ -159,6 +159,6 @@ python chrome.py "${PROFILE}" "{query}"</string>
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string>http://www.thomasupton.com/</string>
+	<string>https://github.com/tupton/alfred-chrome-history</string>
 </dict>
 </plist>
