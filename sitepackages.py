@@ -9,7 +9,7 @@ def is_virtual_env():
 def virtual_env_site_packages():
     site_packages = [p for p in sys.path if p.endswith('site-packages')]
     if len(site_packages) > 0:
-        return site_packages[-1]
+        return site_packages[0]
 
 def site_packages():
     site_packages = site.getsitepackages()
