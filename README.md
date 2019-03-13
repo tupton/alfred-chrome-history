@@ -20,11 +20,29 @@ Then run `make dev` to install requirements and set the repository up to be used
 
 The workflow should work out of the box with the `ch` prefix. If you'd like to change this, update the keyword in the Alfred workflow's script filter.
 
-The Alfred script filter is set up to use the default Chrome profile. If you need to use a different profile, update the `PROFILE` environment variable in the Alfred workflow's script filter.
+### Choosing the correct Google Chrome profile directory
+
+The Alfred script filter is set up to use the default Chrome profile located in `~/Library/Application Support/Google/Chrome/Default`. If you need to use a different profile, update the `PROFILE` environment variable in the Alfred workflow's script filter. This could be the necessary if you have signed in to Chrome with different or multiple accounts, and usually the profile directory is located in something like `Profile 1`. If that is the case, the entire Script contents in the workflow's script filter would be:
+
+```sh
+PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
+PATH="env/bin:$PATH"
+python chrome.py "${PROFILE}" "{query}"
+```
+
+In a terminal, the following command can help you find the exact location of the profile directory that the workflow needs:
+
+```sh
+ls ~/Library/Application\ Support/Google/Chrome/ | grep Profile
+```
+
+### Disabling favicon support
 
 By default, the script tries to grab favicons from a separate database. This can sometimes slow down the results, which is not desirable. To turn off favicon support, pass `--no-favicons` in the Alfred workflow's script filter. The last line of the script should look like the following:
 
-    python chrome.py "${PROFILE}" "{query}" --no-favicons
+```sh
+python chrome.py "${PROFILE}" "{query}" --no-favicons
+```
 
 ## How to build
 
