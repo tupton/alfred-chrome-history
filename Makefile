@@ -21,7 +21,7 @@ venv/bin/activate : requirements.txt
 
 install : venv
 	. ${VENV}/bin/activate
-	pip install -r requirements.txt
+	pip install -r requirements.txt --upgrade --force-reinstall
 
 lib :
 	cp `python sitepackages.py`/alfred.py alfred.py
