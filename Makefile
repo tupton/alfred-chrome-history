@@ -1,3 +1,5 @@
+VENV=.venv
+
 all :
 	@echo "Run \`make workflow\` to create the Alfred workflow file after removing the old one if it exists."
 
@@ -7,18 +9,18 @@ distclean :
 clean :
 	rm -f alfred.py
 	rm -f docopt.py
-	rm -rf venv
+	rm -rf ${VENV}
 	find . -iname "*.pyc" -delete
 
 venv : venv/bin/activate
 
 venv/bin/activate : requirements.txt
-	test -d venv || virtualenv venv
-	. venv/bin/activate
-	touch venv/bin/activate
+	test -d ${VENV} || virtualenv ${VENV}
+	. ${VENV}/bin/activate
+	touch ${VENV}/bin/activate
 
 install : venv
-	. venv/bin/activate
+	. ${VENV}/bin/activate
 	pip install -r requirements.txt
 
 lib :
