@@ -1,4 +1,4 @@
-VENV=.venv
+VENV=venv
 
 all :
 	@echo "Run \`make workflow\` to create the Alfred workflow file after removing the old one if it exists."
@@ -12,7 +12,7 @@ clean :
 	rm -rf ${VENV}
 	find . -iname "*.pyc" -delete
 
-venv : venv/bin/activate
+venv : ${VENV}/bin/activate
 
 venv/bin/activate : requirements.txt
 	test -d ${VENV} || virtualenv ${VENV}
