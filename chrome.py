@@ -5,9 +5,9 @@ Get relevant history from the Google Chrome history database based on the given 
 Alfred items based on the results.
 
 Usage:
-    chrome.py [--no-favicons | --favicons] PROFILE QUERY
-    chrome.py (-h | --help)
-    chrome.py --version
+    chrome [--no-favicons | --favicons] PROFILE QUERY
+    chrome (-h | --help)
+    chrome --version
 
 The path to the Chrome user profile to get the history database from is given in PROFILE. The query
 to search for is given in QUERY. The output is formatted as the Alfred script filter XML output
