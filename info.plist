@@ -72,6 +72,8 @@
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -112,7 +114,7 @@ python chrome.py "${PROFILE}" "{query}"</string>
 			<key>uid</key>
 			<string>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -121,6 +123,8 @@ python chrome.py "${PROFILE}" "{query}"</string>
 				<false/>
 				<key>clipboardtext</key>
 				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
 				<key>transient</key>
 				<false/>
 			</dict>
@@ -129,11 +133,24 @@ python chrome.py "${PROFILE}" "{query}"</string>
 			<key>uid</key>
 			<string>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>Access your Google Chrome history from Alfred with ch {query}.
+
+The workflow should work out of the box with the "ch" prefix. If you’d like to change this, update the keyword in the Alfred workflow’s script filter.
+
+Choosing the correct Google Chrome profile directory
+
+The Alfred script filter is set up to use the default Chrome profile located in "~/Library/Application Support/Google/Chrome/Default". If you need to use a different profile, update the "PROFILE" environment variable in the Alfred workflow’s script filter. This could be the necessary if you have signed in to Chrome with different or multiple accounts, and usually the profile directory is located in something like Profile 1. If that is the case, the entire Script contents in the workflow’s script filter would be:
+
+PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
+PATH="env/bin:$PATH"
+python chrome.py "${PROFILE}" "{query}"
+In a terminal, the following command can help you find the exact location of the profile directory that the workflow needs:
+
+ls ~/Library/Application\ Support/Google/Chrome/ | grep Profile</string>
 	<key>uidata</key>
 	<dict>
 		<key>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</key>
@@ -158,6 +175,8 @@ python chrome.py "${PROFILE}" "{query}"</string>
 			<real>10</real>
 		</dict>
 	</dict>
+	<key>version</key>
+	<string>0.8.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/tupton/alfred-chrome-history</string>
 </dict>
