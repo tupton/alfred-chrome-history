@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     try:
         db = history_db(profile, favicons=favicons)
-    except IOError, e:
+    except IOError as e:
         alfred_error(e)
         sys.exit(-1)
 
