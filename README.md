@@ -1,4 +1,4 @@
-# Alfred Chrome History Workflow
+# Alfred Chrome/Microft Edge History Workflow
 
 Access your Google Chrome history from Alfred with `ch {query}`.
 
@@ -20,7 +20,7 @@ Then run `make dev` to install requirements and set the repository up to be used
 
 The workflow should work out of the box with the `ch` prefix. If you'd like to change this, update the keyword in the Alfred workflow's script filter.
 
-### Choosing the correct Google Chrome profile directory
+### Choosing the correct Google Chrome / Microsoft Edge profile directory
 
 The Alfred script filter is set up to use the default Chrome profile located in `~/Library/Application Support/Google/Chrome/Default`. If you need to use a different profile, update the `PROFILE` environment variable in the Alfred workflow's script filter. This could be the necessary if you have signed in to Chrome with different or multiple accounts, and usually the profile directory is located in something like `Profile 1`. If that is the case, the entire Script contents in the workflow's script filter would be:
 
@@ -29,6 +29,8 @@ PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
 PATH="env/bin:$PATH"
 python chrome.py "${PROFILE}" "{query}"
 ```
+
+> For Micrsoft Edge you can use ~/Library/Application Support/Microsoft Edge/Default
 
 In a terminal, the following command can help you find the exact location of the profile directory that the workflow needs:
 
