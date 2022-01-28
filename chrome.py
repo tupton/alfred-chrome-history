@@ -50,14 +50,6 @@ FAVICON_SELECT = u"""
     , favicon_bitmaps.image_data, favicon_bitmaps.last_updated
 """
 
-HISTORY_QUERY = u"""
-SELECT urls.id, urls.title, urls.url {favicon_select}
-    FROM urls
-    {favicon_join}
-    WHERE (urls.title LIKE ? OR urls.url LIKE ?)
-    ORDER BY visit_count DESC, typed_count DESC, last_visit_time DESC
-"""
-
 UNIX_EPOCH = datetime.datetime.utcfromtimestamp(0)
 WINDOWS_EPOCH = datetime.datetime(1601, 1, 1)
 SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH = (UNIX_EPOCH - WINDOWS_EPOCH).total_seconds()
@@ -108,15 +100,28 @@ def cache_favicon(image_data, uid, last_updated):
 def convert_chrometime(chrometime):
     return (chrometime * MICROSECS_PER_SEC) - SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH
 
+def get_matching_rows(favicon_select, favicon_join, q):
+    words = filter(lambda word: len(word.strip()) > 0, q.split())
+    criterion = " AND ".join(["(urls.title LIKE ? OR urls.url LIKE ?)" for word in words])
+
+    query = u"""
+SELECT urls.id, urls.title, urls.url {favicon_select}
+    FROM urls
+    {favicon_join}
+    WHERE ({where_clause})
+    ORDER BY visit_count DESC, typed_count DESC, last_visit_time DESC
+""".format(favicon_select=favicon_select, favicon_join=favicon_join, where_clause=criterion)
+    word_tuple = tuple([u'%{}%'.format(word) for word in words for i in range(2)])
+    return db.execute(query, word_tuple)
+
 def history_results(db, query, favicons=True):
-    q = u'%{}%'.format(query)
     if favicons:
         favicon_select = FAVICON_SELECT
         favicon_join = FAVICON_JOIN
     else:
         favicon_select = ''
         favicon_join = ''
-    for row in db.execute(HISTORY_QUERY.format(favicon_select=favicon_select, favicon_join=favicon_join), (q, q,)):
+    for row in get_matching_rows(favicon_select, favicon_join, query):
         if favicons:
             (uid, title, url, image_data, image_last_updated) = row
             icon = cache_favicon(image_data, uid, convert_chrometime(image_last_updated)) if image_data and image_last_updated else None
