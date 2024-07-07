@@ -93,9 +93,9 @@
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string>PROFILE="~/Library/Application Support/Google/Chrome/Default"
+				<string>PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
 PATH="env/bin:$PATH"
-python chrome.py "${PROFILE}" "{query}"</string>
+python3 chrome.py "${PROFILE}" "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -147,7 +147,7 @@ The Alfred script filter is set up to use the default Chrome profile located in 
 
 PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
 PATH="env/bin:$PATH"
-python chrome.py "${PROFILE}" "{query}"
+python3 chrome.py "${PROFILE}" "{query}"
 In a terminal, the following command can help you find the exact location of the profile directory that the workflow needs:
 
 ls ~/Library/Application\ Support/Google/Chrome/ | grep Profile</string>
@@ -156,25 +156,27 @@ ls ~/Library/Application\ Support/Google/Chrome/ | grep Profile</string>
 		<key>28DD6FE4-9B8F-404F-858E-31FB8159BDAF</key>
 		<dict>
 			<key>xpos</key>
-			<integer>700</integer>
+			<real>700</real>
 			<key>ypos</key>
 			<real>130</real>
 		</dict>
 		<key>B8584F68-2E3A-4883-AE38-1F31EE5C2657</key>
 		<dict>
 			<key>xpos</key>
-			<integer>700</integer>
+			<real>700</real>
 			<key>ypos</key>
-			<real>10</real>
+			<real>15</real>
 		</dict>
 		<key>F5EE6337-C93B-44AE-9DB3-C9C1C204D42F</key>
 		<dict>
 			<key>xpos</key>
-			<integer>300</integer>
+			<real>300</real>
 			<key>ypos</key>
-			<real>10</real>
+			<real>15</real>
 		</dict>
 	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
 	<key>version</key>
 	<string>0.8.0</string>
 	<key>webaddress</key>

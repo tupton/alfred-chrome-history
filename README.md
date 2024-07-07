@@ -27,7 +27,7 @@ The Alfred script filter is set up to use the default Chrome profile located in 
 ```sh
 PROFILE="~/Library/Application Support/Google/Chrome/Profile 1"
 PATH="env/bin:$PATH"
-python chrome.py "${PROFILE}" "{query}"
+python3 chrome.py "${PROFILE}" "{query}"
 ```
 
 In a terminal, the following command can help you find the exact location of the profile directory that the workflow needs:
@@ -41,7 +41,7 @@ ls ~/Library/Application\ Support/Google/Chrome/ | grep Profile
 By default, the script tries to grab favicons from a separate database. This can sometimes slow down the results, which is not desirable. To turn off favicon support, pass `--no-favicons` in the Alfred workflow's script filter. The last line of the script should look like the following:
 
 ```sh
-python chrome.py "${PROFILE}" "{query}" --no-favicons
+python3 chrome.py "${PROFILE}" "{query}" --no-favicons
 ```
 
 ## How to build

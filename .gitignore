@@ -5,3 +5,4 @@ venv/
 *.py
 *.pyc
 !chrome.py
+!alfred.py

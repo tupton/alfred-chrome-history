@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Get relevant history from the Google Chrome history database based on the given query and build
 Alfred items based on the results.
 
 Usage:
-    chrome [--no-favicons | --favicons] PROFILE QUERY
-    chrome (-h | --help)
-    chrome --version
+    chrome.py [--no-favicons | --favicons] PROFILE QUERY
+    chrome.py (-h | --help)
+    chrome.py --version
 
 The path to the Chrome user profile to get the history database from is given in PROFILE. The query
 to search for is given in QUERY. The output is formatted as the Alfred script filter XML output
@@ -21,8 +21,6 @@ Options:
     --favicons     Include favicons in the Alfred XML results [default: true]
 """
 
-from __future__ import print_function
-
 import alfred
 import sqlite3
 import shutil
@@ -32,25 +30,25 @@ import time
 import datetime
 from docopt import docopt
 
-__version__ = '0.8.0'
+__version__ = '0.7.0'
 
 CACHE_EXPIRY = 60
 HISTORY_DB = 'History'
 FAVICONS_DB = 'Favicons'
 FAVICONS_CACHE = 'Favicons-Cache'
 
-FAVICON_JOIN = u"""
+FAVICON_JOIN = """
     LEFT OUTER JOIN icon_mapping ON icon_mapping.page_url = urls.url,
                     favicon_bitmaps ON favicon_bitmaps.id =
                         (SELECT id FROM favicon_bitmaps
                             WHERE favicon_bitmaps.icon_id = icon_mapping.icon_id
                             ORDER BY width DESC LIMIT 1)
 """
-FAVICON_SELECT = u"""
+FAVICON_SELECT = """
     , favicon_bitmaps.image_data, favicon_bitmaps.last_updated
 """
 
-HISTORY_QUERY = u"""
+HISTORY_QUERY = """
 SELECT urls.id, urls.title, urls.url {favicon_select}
     FROM urls
     {favicon_join}
@@ -58,14 +56,17 @@ SELECT urls.id, urls.title, urls.url {favicon_select}
     ORDER BY visit_count DESC, typed_count DESC, last_visit_time DESC
 """
 
-UNIX_EPOCH = datetime.datetime.utcfromtimestamp(0)
-WINDOWS_EPOCH = datetime.datetime(1601, 1, 1)
+# UNIX_EPOCH = datetime.datetime.fromtimestamp(0, datetime.timezone.utc)
+# WINDOWS_EPOCH = datetime.datetime(1601, 1, 1)
+# SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH = (UNIX_EPOCH - WINDOWS_EPOCH).total_seconds()
+UNIX_EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+WINDOWS_EPOCH = datetime.datetime(1601, 1, 1, tzinfo=datetime.timezone.utc)
 SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH = (UNIX_EPOCH - WINDOWS_EPOCH).total_seconds()
 MICROSECS_PER_SEC = 10 ** -6
 
 class ErrorItem(alfred.Item):
     def __init__(self, error):
-        alfred.Item.__init__(self, {u'valid': u'NO', u'autocomplete': error.message}, error.message, u'Check the workflow log for more information.')
+        super().__init__({u'valid': u'NO', u'autocomplete': error}, error, u'Check the workflow log for more information.')
 
 def alfred_error(error):
     alfred.write(alfred.xml([ErrorItem(error)]))
@@ -79,7 +80,7 @@ def copy_db(name, profile):
     try:
         shutil.copy(db_file, cache)
     except:
-        raise IOError(u'Unable to copy Google Chrome history database from {}'.format(db_file))
+        raise IOError('Unable to copy Google Chrome history database from {}'.format(db_file))
 
     return cache
 
@@ -96,17 +97,18 @@ def cache_favicon(image_data, uid, last_updated):
     if not os.path.isdir(cache_dir):
         os.makedirs(cache_dir)
     icon_file = os.path.join(cache_dir, str(uid))
-    if not os.path.isfile(icon_file) or last_updated > os.path.getmtime(icon_file):
-        with open(icon_file, 'w') as f:
+    # Convert last_updated to timestamp for comparison
+    last_updated_ts = last_updated.timestamp()
+    if not os.path.isfile(icon_file) or last_updated_ts > os.path.getmtime(icon_file):
+        with open(icon_file, 'wb') as f:  # Ensure binary write mode
             f.write(image_data)
-        os.utime(icon_file, (time.time(), last_updated))
+        # Update the file's modification time to last_updated_ts
+        os.utime(icon_file, (time.time(), last_updated_ts))
 
     return (icon_file, {'type': 'png'})
 
-# Chrome measures time in microseconds since the Windows epoch (1601/1/1)
-# https://code.google.com/p/chromium/codesearch#chromium/src/base/time/time.h
 def convert_chrometime(chrometime):
-    return (chrometime * MICROSECS_PER_SEC) - SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH
+    return datetime.datetime.fromtimestamp((chrometime / 10**6) - SECONDS_BETWEEN_UNIX_AND_WINDOWS_EPOCH, tz=datetime.timezone.utc)
 
 def history_results(db, query, favicons=True):
     q = u'%{}%'.format(query)
@@ -116,7 +118,7 @@ def history_results(db, query, favicons=True):
     else:
         favicon_select = ''
         favicon_join = ''
-    for row in db.execute(HISTORY_QUERY.format(favicon_select=favicon_select, favicon_join=favicon_join), (q, q,)):
+    for row in db.execute(HISTORY_QUERY.format(favicon_select=favicon_select, favicon_join=favicon_join), (q, q)):
         if favicons:
             (uid, title, url, image_data, image_last_updated) = row
             icon = cache_favicon(image_data, uid, convert_chrometime(image_last_updated)) if image_data and image_last_updated else None
@@ -124,14 +126,15 @@ def history_results(db, query, favicons=True):
             (uid, title, url) = row
             icon = None
 
-        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url, u'autocomplete': url}, title or url, url, icon)
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url, u'autocomplete': url}, title or url, url, icon=icon)
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='Alfred Chrome History {}'.format(__version__))
+    arguments = docopt(__doc__, version=__version__)
     favicons = arguments.get('--no-favicons') is False
 
-    profile = unicode(arguments.get('PROFILE'), encoding='utf-8', errors='ignore')
-    query = unicode(arguments.get('QUERY'), encoding='utf-8', errors='ignore')
+    profile = arguments.get('PROFILE')
+    query = arguments.get('QUERY')
+
 
     try:
         db = history_db(profile, favicons=favicons)
@@ -139,4 +142,4 @@ if __name__ == '__main__':
         alfred_error(e)
         sys.exit(-1)
 
-    alfred.write(alfred.xml(history_results(db, query, favicons=favicons)))
+    alfred.write(alfred.xml(list(history_results(db, query, favicons=favicons))))
